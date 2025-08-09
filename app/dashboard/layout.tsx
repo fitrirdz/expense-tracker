@@ -85,7 +85,7 @@ export default function DashboardLayout({
         <Button
           variant='outline'
           size='sm'
-          className='w-full bg-vintage-cream border-vintage-sage hover:bg-vintage-sage/20'
+          className='w-full bg-vintage-cream border-vintage-sage hover:bg-vintage-dark-brown'
           onClick={handleLogout}
           style={{ borderColor: 'rgba(214, 218, 200, 0.3)' }}
         >
