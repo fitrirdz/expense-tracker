@@ -11,11 +11,11 @@
     --popover: 251 243 213;
     --popover-foreground: 45 35 25;
     --primary: 214 169 157;
-    --primary-foreground: 255 255 255;
+    --primary-foreground: 45 35 25; /* Changed to dark brown for better contrast */
     --secondary: 214 218 200;
     --secondary-foreground: 45 35 25; /* Much darker brown */
     --muted: 214 218 200;
-    --muted-foreground: 85 75 65; /* Darker muted text */
+    --muted-foreground: 85 80 35; /* Darker muted text */
     --accent: 156 175 170;
     --accent-foreground: 255 255 255;
     --destructive: 196 117 107;
@@ -33,8 +33,16 @@
   }
   body {
     @apply bg-background text-foreground font-serif;
-    background-image: radial-gradient(circle at 25% 25%, rgba(214, 169, 157, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(156, 175, 170, 0.1) 0%, transparent 50%);
+    background-image: radial-gradient(
+        circle at 25% 25%,
+        rgba(214, 169, 157, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 75% 75%,
+        rgba(156, 175, 170, 0.1) 0%,
+        transparent 50%
+      );
   }
 }
 
@@ -47,28 +55,32 @@
         rgba(214, 218, 200, 0.3) 34%,
         transparent 35%,
         transparent
-      ), linear-gradient(0deg, rgba(251, 243, 213, 0.8), rgba(251, 243, 213, 0.8));
+      ),
+      linear-gradient(0deg, rgba(251, 243, 213, 0.8), rgba(251, 243, 213, 0.8));
   }
 
   .vintage-card {
     @apply vintage-paper border-2 shadow-lg;
     border-color: rgba(214, 218, 200, 0.3);
-    box-shadow: 0 4px 6px -1px rgba(214, 169, 157, 0.2), 0 2px 4px -1px rgba(214, 169, 157, 0.1), inset 0 1px 0
-      rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 6px -1px rgba(214, 169, 157, 0.2),
+      0 2px 4px -1px rgba(214, 169, 157, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 
   .vintage-button {
-    @apply text-white border-2;
-    background-color: #d6a99d;
-    border-color: rgba(214, 169, 157, 0.5);
-    box-shadow: 0 2px 4px rgba(214, 169, 157, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    @apply text-primary-foreground border-2;
+    background-color: #fbf3d5; /* Changed to light background for contrast */
+    border-color: rgba(214, 169, 157, 0.8);
+    box-shadow: 0 2px 4px rgba(214, 169, 157, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
     transition: all 0.2s ease;
   }
 
   .vintage-button:hover {
-    background-color: rgba(214, 169, 157, 0.9);
+    background-color: rgba(214, 169, 157, 0.15);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(214, 169, 157, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(214, 169, 157, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 
   .vintage-input {
