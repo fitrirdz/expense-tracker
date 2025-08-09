@@ -32,7 +32,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-serif;
+    @apply text-foreground font-serif;
     background-image: radial-gradient(
         circle at 25% 25%,
         rgba(214, 169, 157, 0.1) 0%,

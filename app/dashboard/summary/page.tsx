@@ -195,7 +195,11 @@ export default function SummaryPage() {
                     </span>
                   </div>
                 </div>
-                <Progress value={item.percentage} className='h-2' />
+                <Progress
+                  value={item.percentage}
+                  className='h-2'
+                  color={item.color}
+                />
               </div>
             ))}
           </div>
