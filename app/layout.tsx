@@ -5,8 +5,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | XpnsTrckr',
-    default: 'XpnsTrckr - Track Your Expenses in Style',
+    template: '%s | ExpenseTracker',
+    default: 'ExpenseTracker - Track Your Expenses in Style',
   },
   description: 'A vintage-themed expense tracking application',
 };
