@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 251 243 213;
-    --foreground: 45 35 25; /* Much darker brown */
-    --card: 251 243 213;
-    --card-foreground: 45 35 25; /* Much darker brown */
-    --popover: 251 243 213;
-    --popover-foreground: 45 35 25;
-    --primary: 214 169 157;
-    --primary-foreground: 45 35 25; /* Changed to dark brown for better contrast */
-    --secondary: 214 218 200;
-    --secondary-foreground: 45 35 25; /* Much darker brown */
-    --muted: 214 218 200;
-    --muted-foreground: 85 80 35; /* Darker muted text */
-    --accent: 156 175 170;
-    --accent-foreground: 255 255 255;
-    --destructive: 196 117 107;
-    --destructive-foreground: 255 255 255;
-    --border: 214 218 200;
-    --input: 214 218 200;
-    --ring: 214 169 157;
+    --background: rgb(251, 243, 213);
+    --foreground: rgb(45, 35, 25); /* Much darker brown */
+    --card: rgb(251, 243, 213);
+    --card-foreground: rgb(45, 35, 25); /* Much darker brown */
+    --popover: rgb(251, 243, 213);
+    --popover-foreground: rgb(45, 35, 25);
+    --primary: rgb(214, 169, 157);
+    --primary-foreground: rgb(45, 35, 25); /* Changed to dark brown for better contrast */
+    --secondary: rgb(214, 218, 200);
+    --secondary-foreground: rgb(45, 35, 25); /* Much darker brown */
+    --muted: rgb(214, 218, 200);
+    --muted-foreground: rgb(85, 80, 35); /* Darker muted text */
+    --accent: rgb(156, 175, 170);
+    --accent-foreground: rgb(255, 255, 255);
+    --destructive: rgb(196, 117, 107);
+    --destructive-foreground: rgb(255, 255, 255);
+    --border: rgb(214, 218, 200);
+    --input: rgb(214, 218, 200);
+    --ring: rgb(214, 169, 157);
     --radius: 0.75rem;
   }
 }
