@@ -69,7 +69,6 @@ export default function RegisterPage() {
                   setFormData((prev) => ({ ...prev, username: e.target.value }))
                 }
                 required
-                className='vintage-input'
               />
             </div>
             <div className='space-y-2'>
@@ -103,7 +102,7 @@ export default function RegisterPage() {
                 </Button>
               </div>
             </div>
-            <Button type='submit' className='w-full vintage-button'>
+            <Button type='submit' className='w-full vintage-button bg-vintage-income-green text-white hover:text-black border-vintage-dark-brown'>
               Create Account
             </Button>
           </form>
