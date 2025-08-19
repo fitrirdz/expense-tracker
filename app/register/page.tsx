@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, DollarSign } from 'lucide-react';
+import { signup } from '@/services/auth';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,12 +24,17 @@ export default function RegisterPage() {
     password: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Integrate with /register endpoint
-    console.log('Register data:', formData);
-    // For now, redirect to login
-    window.location.href = '/login';
+   
+    await signup(formData)
+      .then(() => {
+        alert('Success!');
+        window.location.href = '/login';
+      })
+      .catch((err) => {
+        console.error('Can not register: ', err);
+      });
   };
 
   return (
@@ -102,7 +108,10 @@ export default function RegisterPage() {
                 </Button>
               </div>
             </div>
-            <Button type='submit' className='w-full vintage-button bg-vintage-income-green text-white hover:text-black border-vintage-dark-brown'>
+            <Button
+              type='submit'
+              className='w-full vintage-button bg-vintage-income-green text-white hover:text-black border-vintage-dark-brown'
+            >
               Create Account
             </Button>
           </form>

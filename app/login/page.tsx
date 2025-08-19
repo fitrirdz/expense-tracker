@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, DollarSign } from 'lucide-react';
+import { login } from '@/services/auth';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,12 +24,16 @@ export default function LoginPage() {
     password: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Integrate with /login endpoint
-    console.log('Login data:', formData);
-    // For now, redirect to dashboard
-    window.location.href = '/dashboard';
+
+    await login(formData)
+      .then(() => {
+        window.location.href = '/dashboard';
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
