@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, DollarSign } from 'lucide-react';
 import { login } from '@/services/auth';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -34,7 +35,9 @@ export default function LoginPage() {
       router.push('/dashboard');
     } catch (err) {
       console.error(err);
-      // TODO: Add proper error handling with toast notifications
+      toast.error('Registration failed', {
+        description: 'Please check your information and try again.',
+      });
     }
   };
 

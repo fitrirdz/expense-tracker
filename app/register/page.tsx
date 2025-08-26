@@ -17,6 +17,7 @@ import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, DollarSign } from 'lucide-react';
 import { signup } from '@/services/auth';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -28,15 +29,23 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-   
-    await signup(formData)
-      .then(() => {
-        alert('Success!');
-        router.push('/login');
-      })
-      .catch((err) => {
-        console.error('Can not register: ', err);
+
+    try {
+      await signup(formData);
+
+      toast.success('Registration successful!', {
+        description: 'Redirecting you to login...',
+        action: {
+          label: 'Login now',
+          onClick: () => router.push('/login'),
+        },
       });
+    } catch (err) {
+      console.error('Can not register: ', err);
+      toast.error('Registration failed', {
+        description: 'Please check your information and try again.',
+      });
+    }
   };
 
   return (
