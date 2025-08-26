@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { formatIDR } from '@/lib/currency';
 import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 // Mock data - replace with real data from your API
 const mockStats = {
@@ -69,13 +70,15 @@ const recentTransactions = [
 ];
 
 export default function DashboardPage() {
+  const userData = JSON.parse(Cookies.get('user_data') || '{}');
+
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Dashboard</h1>
+          <h1 className='text-3xl font-bold tracking-tight'>Welcome, {userData?.username}!</h1>
           <p className='text-muted-foreground'>
-            Welcome back! Here's an overview of your expenses.
+            Here's an overview of your expenses.
           </p>
         </div>
       </div>

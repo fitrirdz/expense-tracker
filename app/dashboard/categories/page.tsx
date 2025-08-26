@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -31,46 +31,43 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Plus, Tag, Edit, Trash2 } from 'lucide-react';
-
-// Mock data
-const mockCategories = [
-  { id: 1, code: 'FOOD', name: 'Food & Dining' },
-  { id: 2, code: 'TRANS', name: 'Transportation' },
-  { id: 3, code: 'BILLS', name: 'Bills & Utilities' },
-  { id: 4, code: 'ENT', name: 'Entertainment' },
-  { id: 5, code: 'INC', name: 'Income' },
-  { id: 6, code: 'SHOP', name: 'Shopping' },
-  { id: 7, code: 'HEALTH', name: 'Healthcare' },
-  { id: 8, code: 'EDU', name: 'Education' },
-];
+import { addCategory, CategoriesResponse, getCategories } from '@/services/categories';
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState(mockCategories);
+  const [categories, setCategories] = useState<CategoriesResponse[]>([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newCategory, setNewCategory] = useState({
     code: '',
     name: '',
   });
 
-  const handleAddCategory = (e: React.FormEvent) => {
+  const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Integrate with /categories POST endpoint
     const category = {
-      id: Date.now(),
       code: newCategory.code.toUpperCase(),
       name: newCategory.name,
     };
-    setCategories((prev) => [...prev, category]);
+    await addCategory(category);
     setNewCategory({ code: '', name: '' });
     setIsAddDialogOpen(false);
-    console.log('New category:', category);
   };
 
-  const handleDeleteCategory = (id: number) => {
-    // TODO: Integrate with DELETE endpoint if available
-    setCategories((prev) => prev.filter((cat) => cat.id !== id));
-    console.log('Deleted category:', id);
-  };
+  // const handleDeleteCategory = (id: number) => {
+  //   // TODO: Integrate with DELETE endpoint if available
+  //   setCategories((prev) => prev.filter((cat) => cat.id !== id));
+  // };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    getData();
+  }, []);
 
   return (
     <div className='space-y-6'>
@@ -149,59 +146,6 @@ export default function CategoriesPage() {
         </Dialog>
       </div>
 
-      {/* Categories Grid */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-3'>
-        {categories.map((category) => (
-          <Card key={category.id} className='relative vintage-card'>
-            <CardHeader className='pb-3'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-2'>
-                  <div
-                    className='bg-vintage-rose/20 rounded-lg p-2'
-                    style={{ backgroundColor: 'rgba(214, 169, 157, 0.2)' }}
-                  >
-                    <Tag
-                      className='h-4 w-4 text-vintage-rose'
-                      style={{ color: '#2d2319' }}
-                    />
-                  </div>
-                  <Badge
-                    variant='outline'
-                    className='border-vintage-sage text-vintage-teal'
-                    style={{ borderColor: '#D6DAC8', color: '#2d2319' }}
-                  >
-                    {category.code}
-                  </Badge>
-                </div>
-                <div className='flex gap-1'>
-                  <Button
-                    variant='ghost'
-                    size='sm'
-                    className='hover:bg-vintage-rose/20'
-                  >
-                    <Edit className='h-4 w-4 text-vintage-dark-brown hover:text-vintage-rose' />
-                  </Button>
-                  <Button
-                    variant='ghost'
-                    size='sm'
-                    className='hover:bg-vintage-rose/20'
-                    onClick={() => handleDeleteCategory(category.id)}
-                  >
-                    <Trash2 className='h-4 w-4 text-vintage-dark-brown hover:text-vintage-rose' />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <h3 className='font-semibold'>{category.name}</h3>
-              <p className='text-sm text-muted-foreground mt-1'>
-                Category for organizing transactions
-              </p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
       {/* Categories Table */}
       <Card className='vintage-card'>
         <CardHeader>
@@ -216,9 +160,9 @@ export default function CategoriesPage() {
               <TableRow>
                 <TableHead className='text-2d2319'>Code</TableHead>
                 <TableHead className='text-2d2319'>Name</TableHead>
-                <TableHead className='text-right text-2d2319'>
+                {/* <TableHead className='text-right text-2d2319'>
                   Actions
-                </TableHead>
+                </TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -242,7 +186,7 @@ export default function CategoriesPage() {
                       {category.name}
                     </div>
                   </TableCell>
-                  <TableCell className='text-right text-2d2319'>
+                  {/* <TableCell className='text-right text-2d2319'>
                     <div className='flex justify-end gap-2'>
                       <Button
                         variant='ghost'
@@ -260,7 +204,7 @@ export default function CategoriesPage() {
                         <Trash2 className='h-4 w-4 text-vintage-dark-brown hover:text-vintage-rose' />
                       </Button>
                     </div>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
