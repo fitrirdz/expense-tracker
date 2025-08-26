@@ -78,14 +78,6 @@ export default function DashboardPage() {
             Welcome back! Here's an overview of your expenses.
           </p>
         </div>
-        <div className='flex gap-2'>
-          <Button asChild className='vintage-button'>
-            <Link href='/dashboard/transactions'>
-              <Plus className='mr-2 h-4 w-4' />
-              Add Transaction
-            </Link>
-          </Button>
-        </div>
       </div>
 
       {/* Stats Cards */}

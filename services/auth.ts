@@ -9,11 +9,11 @@ export interface AuthPayload {
 export function signup(
   payload: AuthPayload
 ): Promise<AxiosResponse<AuthPayload>> {
-  return api.post<AuthPayload>('register', { payload });
+  return api.post<AuthPayload>('register', payload);
 }
 
 export function login(
   payload: AuthPayload
 ): Promise<AxiosResponse<AuthPayload>> {
-  return api.post<AuthPayload>('register', { payload });
+  return api.post<AuthPayload>('login', payload);
 }
