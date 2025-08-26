@@ -4,7 +4,7 @@ import type React from 'react';
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import {
@@ -18,6 +18,7 @@ import {
   User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { logout } from '@/utils/common';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -32,11 +33,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
-    // TODO: Implement logout logic
-    window.location.href = '/login';
+    logout();
+    router.push('/login');
   };
 
   const Sidebar = ({ mobile = false }) => (

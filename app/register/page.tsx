@@ -16,8 +16,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, DollarSign } from 'lucide-react';
 import { signup } from '@/services/auth';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -30,7 +32,7 @@ export default function RegisterPage() {
     await signup(formData)
       .then(() => {
         alert('Success!');
-        window.location.href = '/login';
+        router.push('/login');
       })
       .catch((err) => {
         console.error('Can not register: ', err);

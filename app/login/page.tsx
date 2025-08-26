@@ -16,8 +16,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff, DollarSign } from 'lucide-react';
 import { login } from '@/services/auth';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
@@ -27,13 +29,13 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await login(formData)
-      .then(() => {
-        window.location.href = '/dashboard';
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    try {
+      await login(formData);
+      router.push('/dashboard');
+    } catch (err) {
+      console.error(err);
+      // TODO: Add proper error handling with toast notifications
+    }
   };
 
   return (
