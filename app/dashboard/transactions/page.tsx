@@ -144,7 +144,7 @@ export default function TransactionsPage() {
     e.preventDefault();
     // TODO: Integrate with /transactions POST endpoint
     const transaction = {
-      id: Date.now(),
+      id: transactions.length + 1,
       description: newTransaction.description,
       amount: Number.parseFloat(newTransaction.amount),
       category: newTransaction.category,

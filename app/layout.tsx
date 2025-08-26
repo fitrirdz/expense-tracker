@@ -3,6 +3,7 @@ import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import { Metadata } from 'next';
 import { Toaster } from 'sonner';
+import { QueryProvider } from '@/providers/query-provider';
 
 export const metadata: Metadata = {
   title: {
@@ -29,8 +30,10 @@ html {
         `}</style>
       </head>
       <body>
-        {children}
-        <Toaster position="top-right" />
+        <QueryProvider>
+          {children}
+          <Toaster position="top-right" />
+        </QueryProvider>
       </body>
     </html>
   );

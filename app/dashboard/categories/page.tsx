@@ -2,7 +2,8 @@
 
 import type React from 'react';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useCategories } from '@/hooks/use-categories';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -30,16 +31,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Plus, Tag, Edit, Trash2 } from 'lucide-react';
-import { addCategory, CategoriesResponse, getCategories } from '@/services/categories';
+import { Plus, Tag, Edit, Trash2, Loader2 } from 'lucide-react';
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState<CategoriesResponse[]>([]);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newCategory, setNewCategory] = useState({
     code: '',
     name: '',
   });
+
+  const {
+    categories = [],
+    isLoading,
+    error,
+    addCategory: mutateAddCategory,
+    isAddingCategory,
+  } = useCategories();
 
   const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,27 +54,31 @@ export default function CategoriesPage() {
       code: newCategory.code.toUpperCase(),
       name: newCategory.name,
     };
-    await addCategory(category);
-    setNewCategory({ code: '', name: '' });
-    setIsAddDialogOpen(false);
+
+    mutateAddCategory(category, {
+      onSuccess: () => {
+        setNewCategory({ code: '', name: '' });
+        setIsAddDialogOpen(false);
+      },
+    });
   };
 
-  // const handleDeleteCategory = (id: number) => {
-  //   // TODO: Integrate with DELETE endpoint if available
-  //   setCategories((prev) => prev.filter((cat) => cat.id !== id));
-  // };
+  if (isLoading) {
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+        <Loader2 className='w-8 h-8 animate-spin' />
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await getCategories();
-        setCategories(data.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    getData();
-  }, []);
+  if (error) {
+    return (
+      <div className='flex flex-col items-center justify-center min-h-screen'>
+        <p className='text-red-500'>Error loading categories</p>
+        <p className='text-sm text-gray-500'>Please try again later</p>
+      </div>
+    );
+  }
 
   return (
     <div className='space-y-6'>
