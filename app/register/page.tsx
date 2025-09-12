@@ -18,6 +18,7 @@ import { Eye, EyeOff, DollarSign } from 'lucide-react';
 import { signup } from '@/services/auth';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -40,9 +41,8 @@ export default function RegisterPage() {
           onClick: () => router.push('/login'),
         },
       });
-    } catch (err) {
-      console.error('Can not register: ', err);
-      toast.error('Registration failed', {
+    } catch (err: AxiosError | any) {
+      toast.error(err?.response?.data?.error, {
         description: 'Please check your information and try again.',
       });
     }

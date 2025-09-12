@@ -18,6 +18,7 @@ import { Eye, EyeOff, DollarSign } from 'lucide-react';
 import { login } from '@/services/auth';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { AxiosError } from 'axios';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,9 +34,8 @@ export default function LoginPage() {
     try {
       await login(formData);
       router.push('/dashboard');
-    } catch (err) {
-      console.error(err);
-      toast.error('Registration failed', {
+    } catch (err: AxiosError | any) {
+      toast.error(err?.response?.data?.error, {
         description: 'Please check your information and try again.',
       });
     }
