@@ -22,69 +22,34 @@ import {
 import { formatIDR } from '@/lib/currency';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
+import { useTransactions } from '@/hooks/use-transactions';
 
-// Mock data - replace with real data from your API
-const mockStats = {
-  totalExpenses: 2450500,
-  monthlyChange: -12.5,
-  transactionCount: 47,
-  categoryCount: 8,
-};
-
-const recentTransactions = [
-  {
-    id: 1,
-    description: 'Grocery Shopping',
-    amount: -85500,
-    category: 'Food',
-    date: '2024-01-15',
-  },
-  {
-    id: 2,
-    description: 'Gas Station',
-    amount: -45000,
-    category: 'Transportation',
-    date: '2024-01-14',
-  },
-  {
-    id: 3,
-    description: 'Coffee Shop',
-    amount: -12500,
-    category: 'Food',
-    date: '2024-01-14',
-  },
-  {
-    id: 4,
-    description: 'Salary',
-    amount: 3000000,
-    category: 'Income',
-    date: '2024-01-13',
-  },
-  {
-    id: 5,
-    description: 'Utilities',
-    amount: -120000,
-    category: 'Bills',
-    date: '2024-01-12',
-  },
-];
+// const mockStats = {
+//   totalExpenses: 2450500,
+//   monthlyChange: -12.5,
+//   transactionCount: 47,
+//   categoryCount: 8,
+// };
 
 export default function DashboardPage() {
   const userData = JSON.parse(Cookies.get('user_data') || '{}');
+  const { transactions: recentTransactions } = useTransactions();
 
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Welcome, {userData?.username}!</h1>
+          <h1 className='text-3xl font-bold tracking-tight'>
+            Welcome, {userData?.username}!
+          </h1>
           <p className='text-muted-foreground'>
             Here's an overview of your expenses.
           </p>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+      {/* Stats Cards (Temporary hidden) */}
+      {/* <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card className='vintage-card'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>
@@ -150,7 +115,7 @@ export default function DashboardPage() {
             <p className='text-xs text-muted-foreground'>Last 30 days</p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Recent Transactions */}
       <Card className='vintage-card'>
@@ -173,7 +138,7 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className='space-y-4'>
-            {recentTransactions.map((transaction) => (
+            {recentTransactions?.map((transaction) => (
               <div
                 key={transaction.id}
                 className='flex items-center justify-between'
@@ -210,7 +175,7 @@ export default function DashboardPage() {
                       borderColor: '#D6DAC8',
                     }}
                   >
-                    {transaction.category}
+                    {transaction.category_name}
                   </Badge>
                   <span
                     className={`font-medium ${

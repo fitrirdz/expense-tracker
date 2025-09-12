@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 import { logout } from '@/utils/common';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: Home },
+  // { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Transactions', href: '/dashboard/transactions', icon: Receipt },
   { name: 'Categories', href: '/dashboard/categories', icon: Tag },
   { name: 'Summary', href: '/dashboard/summary', icon: BarChart3 },

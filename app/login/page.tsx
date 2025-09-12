@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     try {
       await login(formData);
-      router.push('/dashboard');
+      router.push('/dashboard/transactions');
     } catch (err: AxiosError | any) {
       toast.error(err?.response?.data?.error, {
         description: 'Please check your information and try again.',
