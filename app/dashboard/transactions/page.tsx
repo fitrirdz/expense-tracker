@@ -49,77 +49,14 @@ import {
   Calendar,
   FileText,
 } from 'lucide-react';
-
-// Mock data
-const mockTransactions = [
-  {
-    id: 1,
-    description: 'Grocery Shopping at SuperIndo',
-    amount: -85500,
-    category: 'Food',
-    date: '2024-01-15',
-  },
-  {
-    id: 2,
-    description: 'Gas Station Fill-up',
-    amount: -45000,
-    category: 'Transportation',
-    date: '2024-01-14',
-  },
-  {
-    id: 3,
-    description: 'Morning Coffee',
-    amount: -12500,
-    category: 'Food',
-    date: '2024-01-14',
-  },
-  {
-    id: 4,
-    description: 'Monthly Salary',
-    amount: 3000000,
-    category: 'Income',
-    date: '2024-01-13',
-  },
-  {
-    id: 5,
-    description: 'Electric Bill',
-    amount: -120000,
-    category: 'Bills',
-    date: '2024-01-12',
-  },
-  {
-    id: 6,
-    description: 'Netflix Subscription',
-    amount: -159900,
-    category: 'Entertainment',
-    date: '2024-01-11',
-  },
-  {
-    id: 7,
-    description: 'Gojek Ride',
-    amount: -18500,
-    category: 'Transportation',
-    date: '2024-01-10',
-  },
-  {
-    id: 8,
-    description: 'Freelance Payment',
-    amount: 500000,
-    category: 'Income',
-    date: '2024-01-09',
-  },
-];
-
-const mockCategories = [
-  { id: 1, code: 'FOOD', name: 'Food & Dining' },
-  { id: 2, code: 'TRANS', name: 'Transportation' },
-  { id: 3, code: 'BILLS', name: 'Bills & Utilities' },
-  { id: 4, code: 'ENT', name: 'Entertainment' },
-  { id: 5, code: 'INC', name: 'Income' },
-];
+import { useTransactions } from '@/hooks/use-transactions';
+import { useCategories } from '@/hooks/use-categories';
 
 export default function TransactionsPage() {
-  const [transactions, setTransactions] = useState(mockTransactions);
+  const { isLoading, transactions, isAddingTransaction, addTransaction } =
+    useTransactions();
+  const { categories } = useCategories();
+  // const [transactions, setTransactions] = useState(mockTransactions);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -131,29 +68,34 @@ export default function TransactionsPage() {
     category: '',
   });
 
-  const filteredTransactions = transactions.filter((transaction) => {
+  const filteredTransactions = transactions?.filter((transaction) => {
     const matchesSearch = transaction.description
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
-      selectedCategory === 'all' || transaction.category === selectedCategory;
+      selectedCategory === 'all' ||
+      transaction.category_name === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const handleAddTransaction = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Integrate with /transactions POST endpoint
+
     const transaction = {
-      id: transactions.length + 1,
       description: newTransaction.description,
-      amount: Number.parseFloat(newTransaction.amount),
-      category: newTransaction.category,
+      amount: parseFloat(newTransaction.amount),
+      category_id: parseInt(newTransaction.category),
       date: newTransaction.date,
     };
-    setTransactions((prev) => [transaction, ...prev]);
-    setNewTransaction({ amount: '', date: '', description: '', category: '' });
+    addTransaction(transaction);
+
+    setNewTransaction({
+      amount: '',
+      date: '',
+      description: '',
+      category: '',
+    });
     setIsAddDialogOpen(false);
-    console.log('New transaction:', transaction);
   };
 
   const handleImportCSV = (e: React.FormEvent) => {
@@ -161,6 +103,18 @@ export default function TransactionsPage() {
     // TODO: Integrate with /transactions/import POST endpoint
     console.log('Import CSV functionality');
     setIsImportDialogOpen(false);
+  };
+
+  const handleChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value) {
+      const isoString = new Date(value).toISOString();
+      setNewTransaction((prev) => ({
+        ...prev,
+        date: isoString,
+      }));
+    }
   };
 
   return (
@@ -247,9 +201,9 @@ export default function TransactionsPage() {
                     <Input
                       id='amount'
                       type='number'
-                      step='0.01'
-                      placeholder='0.00'
-                      value={newTransaction.amount}
+                      step='1'
+                      placeholder='0'
+                      min={0}
                       onChange={(e) =>
                         setNewTransaction((prev) => ({
                           ...prev,
@@ -263,14 +217,9 @@ export default function TransactionsPage() {
                     <Label htmlFor='date'>Date</Label>
                     <Input
                       id='date'
-                      type='date'
-                      value={newTransaction.date}
-                      onChange={(e) =>
-                        setNewTransaction((prev) => ({
-                          ...prev,
-                          date: e.target.value,
-                        }))
-                      }
+                      // type='date'
+                      type='datetime-local'
+                      onChange={(e) => handleChangeDate(e)}
                       required
                     />
                   </div>
@@ -309,8 +258,8 @@ export default function TransactionsPage() {
                       <SelectValue placeholder='Select a category' />
                     </SelectTrigger>
                     <SelectContent>
-                      {mockCategories.map((category) => (
-                        <SelectItem key={category.id} value={category.name}>
+                      {categories?.map((category) => (
+                        <SelectItem key={category.id} value={`${category.id}`}>
                           {category.name}
                         </SelectItem>
                       ))}
@@ -371,7 +320,7 @@ export default function TransactionsPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value='all'>All Categories</SelectItem>
-                {mockCategories.map((category) => (
+                {categories?.map((category) => (
                   <SelectItem key={category.id} value={category.name}>
                     {category.name}
                   </SelectItem>
@@ -387,7 +336,7 @@ export default function TransactionsPage() {
         <CardHeader>
           <CardTitle>All Transactions</CardTitle>
           <CardDescription>
-            {filteredTransactions.length} transaction(s) found
+            {filteredTransactions?.length} transaction(s) found
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -401,7 +350,7 @@ export default function TransactionsPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTransactions.map((transaction) => (
+              {filteredTransactions?.map((transaction) => (
                 <TableRow key={transaction.id}>
                   <TableCell>
                     <div className='flex items-center gap-2'>
@@ -424,7 +373,7 @@ export default function TransactionsPage() {
                         borderColor: 'rgba(214, 218, 200, 0.5)',
                       }}
                     >
-                      {transaction.category}
+                      {transaction.category_name}
                     </Badge>
                   </TableCell>
                   <TableCell className='text-right'>
