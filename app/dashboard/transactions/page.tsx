@@ -127,7 +127,7 @@ export default function TransactionsPage() {
           </p>
         </div>
         <div className='flex gap-2'>
-          <Dialog
+          {/* <Dialog
             open={isImportDialogOpen}
             onOpenChange={setIsImportDialogOpen}
           >
@@ -178,7 +178,7 @@ export default function TransactionsPage() {
                 </div>
               </form>
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
 
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
