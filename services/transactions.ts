@@ -21,6 +21,16 @@ export interface TransactionPayload {
   description: string;
 }
 
+export interface SummaryResponse {
+  summary: [
+    {
+      category_id: number;
+      category_name: string;
+      total: number;
+    }
+  ];
+}
+
 export function getTransactions(): Promise<
   AxiosResponse<TransactionsResponse>
 > {
@@ -31,4 +41,8 @@ export function addTransaction(
   payload: TransactionPayload
 ): Promise<AxiosResponse<TransactionsResponse>> {
   return api.post<TransactionsResponse>('transactions', payload);
+}
+
+export function getSummary(): Promise<AxiosResponse<SummaryResponse>> {
+  return api.get<SummaryResponse>('transactions/summary');
 }

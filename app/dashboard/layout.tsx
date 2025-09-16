@@ -1,8 +1,7 @@
 'use client';
 
-import type React from 'react';
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -31,12 +30,24 @@ const navigation = [
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const userName = JSON.parse(Cookies.get('user_data') || '{}').username;
+  const [userName, setUserName] = useState<string>('');
+
+  useEffect(() => {
+    const userData = Cookies.get('user_data');
+    if (userData) {
+      try {
+        const { username } = JSON.parse(userData);
+        setUserName(username);
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+      }
+    }
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -80,7 +91,9 @@ export default function DashboardLayout({
             <User className='h-4 w-4' />
           </div>
           <div className='text-sm'>
-            <div className='font-medium text-vintage-dark-brown'>{userName}</div>
+            <div className='font-medium text-vintage-dark-brown'>
+              {userName}
+            </div>
             {/* <div className='text-muted-foreground text-vintage-dark-brown'>
               john@example.com
             </div> */}

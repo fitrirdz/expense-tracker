@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import {
   TransactionPayload,
   addTransaction,
+  getSummary,
   getTransactions,
 } from '@/services/transactions';
 
@@ -48,11 +49,26 @@ export function useTransactions() {
     },
   });
 
+  const {
+    data: summary,
+    isLoading: isLoadingSummary,
+    error: summaryError,
+  } = useQuery({
+    queryKey: ['summary'],
+    queryFn: async () => {
+      const response = await getSummary();
+      return response.data?.summary || [];
+    },
+  });
+
   return {
     transactions,
     isLoading,
     error,
     addTransaction: addTransactionMutation.mutate,
     isAddingTransaction: addTransactionMutation.isPending,
+    summary,
+    isLoadingSummary,
+    summaryError,
   };
 }
