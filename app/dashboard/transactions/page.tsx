@@ -355,7 +355,10 @@ export default function TransactionsPage() {
                   <TableCell>
                     <div className='flex items-center gap-2'>
                       <Calendar className='h-4 w-4 text-muted-foreground' />
-                      {transaction.date}
+                      {new Date(transaction.date).toLocaleDateString('id-ID', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                      })}
                     </div>
                   </TableCell>
                   <TableCell>
