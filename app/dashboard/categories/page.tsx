@@ -31,7 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Plus, Tag, Edit, Trash2, Loader2 } from 'lucide-react';
+import { Plus, Tag, Loader2 } from 'lucide-react';
 
 export default function CategoriesPage() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -148,7 +148,7 @@ export default function CategoriesPage() {
                 >
                   Cancel
                 </Button>
-                <Button type='submit' className='vintage-button'>
+                <Button type='submit' className='vintage-button' disabled={isAddingCategory}>
                   Add Category
                 </Button>
               </div>

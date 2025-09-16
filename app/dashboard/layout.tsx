@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { logout } from '@/utils/common';
+import Cookies from 'js-cookie';
 
 const navigation = [
   // { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -35,6 +36,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const userName = JSON.parse(Cookies.get('user_data') || '{}').username;
 
   const handleLogout = () => {
     logout();
@@ -78,18 +80,17 @@ export default function DashboardLayout({
             <User className='h-4 w-4' />
           </div>
           <div className='text-sm'>
-            <div className='font-medium text-vintage-dark-brown'>John Doe</div>
-            <div className='text-muted-foreground text-vintage-dark-brown'>
+            <div className='font-medium text-vintage-dark-brown'>{userName}</div>
+            {/* <div className='text-muted-foreground text-vintage-dark-brown'>
               john@example.com
-            </div>
+            </div> */}
           </div>
         </div>
         <Button
           variant='outline'
           size='sm'
-          className='w-full bg-vintage-cream border-vintage-sage hover:bg-vintage-dark-brown'
+          className='w-full bg-vintage-cream hover:bg-vintage-dark-brown'
           onClick={handleLogout}
-          style={{ borderColor: 'rgba(214, 218, 200, 0.3)' }}
         >
           <LogOut className='mr-2 h-4 w-4' />
           Logout
